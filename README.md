@@ -10,7 +10,7 @@
 
 > ## **No signup. No installation. Free.**
 >
-> 🌐 **Open in Browser** → *HTML Interactive Version*
+> 🌐 **Open in Browser** → [*HTML Interactive Version*](https://hyvoid.github.io/DTC-Inventory-Planning-Control-Tower/)
 >
 > 📥 **Download Excel** → *Excel Workbook Version*
 
