@@ -1309,23 +1309,6 @@ All tools follow the same principles:
 - Lightweight decision-support instead of enterprise replacement
 - Built around repeatable analytical workflows rather than static reporting
 
-GitHub Repository
-
-```
-https://github.com/HyVoid/DTC-Inventory-Planning-Control-Tower
-```
-
-Browser Edition
-
-```
-Coming Soon
-```
-
-Excel Download
-
-```
-Coming Soon
-```
 
 ---
 
