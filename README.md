@@ -16,7 +16,7 @@
 
 ---
 
-**Plan inventory with confidence by combining demand forecasting, lead-time risk, purchasing recommendations, and cash exposure in one lightweight decision-support tool—free to use in both Browser and Excel, with no installation required.**
+**Plan inventory with confidence by combining demand forecasting, lead-time risk, purchasing recommendations, and cash exposure in one lightweight decision-support tool—free to use in both Browser and Excel**
 
 > ## **No signup. No installation. Free.**
 >
@@ -217,7 +217,9 @@ Rather than creating another dashboard full of metrics, I focus on one practical
 
 > **What information needs to appear together so the next operational decision can be made confidently?**
 
-Inventory Planning Control Tower is one example of that approach. It combines demand forecasting, supplier constraints, inventory risk, and cash exposure into a reusable decision-support framework that can be refreshed repeatedly without rebuilding the workbook.
+Inventory Planning Control Tower is one example of that approach. It combines demand forecasting, supplier constraints, inventory risk, and cash exposure into a reusable decision-support framework that organizations can operate and maintain themselves.
+
+---
 
 # Technical Details
 
@@ -226,7 +228,7 @@ Inventory Planning Control Tower is one example of that approach. It combines de
 
 ---
 
-# Workbook Architecture
+## Workbook Architecture
 
 The workbook follows a deliberately separated three-layer architecture.
 
@@ -305,13 +307,13 @@ No worksheet writes values backward into another worksheet, reducing maintenance
 
 ---
 
-# Three Traps That Catch Even Experienced Inventory Managers
+## Three Traps That Catch Even Experienced Inventory Managers
 
 ---
 
-## Trap 1 — Planning Around Today's Inventory Instead of Future Inventory
+### Trap 1 — Planning Around Today's Inventory Instead of Future Inventory
 
-### The Decision
+#### The Decision
 
 Inventory looks healthy today.
 
@@ -319,7 +321,7 @@ Purchasing is postponed.
 
 ---
 
-### The Hidden Faulty Assumption
+#### The Hidden Faulty Assumption
 
 Current warehouse inventory is assumed to represent future availability.
 
@@ -327,7 +329,7 @@ Lead-time demand is ignored.
 
 ---
 
-### Before
+#### Before
 
 | Current Inventory | Daily Sales | Decision |
 |-------------------|------------|----------|
@@ -337,7 +339,7 @@ The inventory appears sufficient.
 
 ---
 
-### Reality
+#### Reality
 
 Supplier Lead Time
 
@@ -359,7 +361,7 @@ The business will consume far more inventory before replenishment arrives.
 
 ---
 
-### Why The Reasoning Fails
+#### Why The Reasoning Fails
 
 Inventory planning is forward-looking.
 
@@ -369,7 +371,7 @@ Ignoring lead-time demand delays purchasing until stockouts become unavoidable.
 
 ---
 
-### Correct Approach
+#### Correct Approach
 
 Calculate expected inventory consumption before replenishment arrives.
 
@@ -377,7 +379,7 @@ Then compare available inventory against that requirement.
 
 ---
 
-### Correct Decision
+#### Correct Decision
 
 ```
 ORDER NOW
@@ -416,15 +418,15 @@ Excel
 
 ---
 
-## Trap 2 — Using Historical Average Sales as the Forecast
+### Trap 2 — Using Historical Average Sales as the Forecast
 
-### The Decision
+#### The Decision
 
 Future purchasing quantities are based entirely on the 90-day average.
 
 ---
 
-### Hidden Faulty Assumption
+#### Hidden Faulty Assumption
 
 Sales demand is assumed to remain stable.
 
@@ -434,7 +436,7 @@ Recent acceleration is ignored.
 
 ---
 
-### Before
+#### Before
 
 ```
 90-Day Average
@@ -450,7 +452,7 @@ Recommended Purchase
 
 ---
 
-### Reality
+#### Reality
 
 Last 30 Days
 
@@ -474,7 +476,7 @@ The historical average underestimates future inventory requirements.
 
 ---
 
-### Why The Reasoning Fails
+#### Why The Reasoning Fails
 
 Historical averages describe the past.
 
@@ -484,7 +486,7 @@ Ignoring demand acceleration causes repeated stockouts even when forecasts appea
 
 ---
 
-### Correct Approach
+#### Correct Approach
 
 Combine historical demand with observed sales momentum and planned promotional activity.
 
@@ -506,7 +508,7 @@ Promotion Multiplier
 
 ---
 
-### Correct Decision
+#### Correct Decision
 
 Increase purchasing before inventory shortages occur.
 
@@ -547,15 +549,15 @@ Excel
 
 ---
 
-## Trap 3 — Treating Inventory as an Operations Problem Instead of a Cash Problem
+### Trap 3 — Treating Inventory as an Operations Problem Instead of a Cash Problem
 
-### The Decision
+#### The Decision
 
 A purchasing recommendation is approved because inventory appears low.
 
 ---
 
-### Hidden Faulty Assumption
+#### Hidden Faulty Assumption
 
 Only physical inventory is evaluated.
 
@@ -563,7 +565,7 @@ Cash requirements receive little attention.
 
 ---
 
-### Before
+#### Before
 
 Purchasing Recommendation
 
@@ -575,7 +577,7 @@ Looks reasonable operationally.
 
 ---
 
-### Reality
+#### Reality
 
 Unit Cost
 
@@ -601,7 +603,7 @@ Inventory planning immediately becomes a capital allocation decision.
 
 ---
 
-### Why The Reasoning Fails
+#### Why The Reasoning Fails
 
 Inventory does not merely occupy warehouse space.
 
@@ -611,7 +613,7 @@ Without visibility into purchasing commitments, businesses unintentionally creat
 
 ---
 
-### Correct Approach
+#### Correct Approach
 
 Every purchasing recommendation should automatically display the financial commitment required.
 
@@ -619,7 +621,7 @@ Operations and finance evaluate the same recommendation simultaneously.
 
 ---
 
-### Correct Decision
+#### Correct Decision
 
 Approve only purchasing plans that satisfy both inventory protection and cash availability.
 
@@ -648,7 +650,7 @@ XLOOKUP(...)
 
 ---
 
-# Example Scenario
+## Example Scenario
 
 A direct-to-consumer home products company imports ninety days of Shopify sales into the workbook.
 
@@ -739,18 +741,18 @@ The purchasing engine then evaluates MOQ requirements and rounds the recommendat
 
 Cash Flow Impact simultaneously estimates the purchasing commitment, allowing finance to determine whether the recommendation fits current working-capital constraints.
 
-Instead of relying on warehouse inventory alone, the business evaluates demand growth, supplier lead time, inventory variability, purchasing policy and cash exposure together before approving the purchase order.
+Instead of relying on warehouse inventory alone, the business evaluates demand growth, supplier lead time, inventory variability, purchasing policy and cash exposure together before approving the purchase.
 
 This produces a recommendation that is both operationally and financially defensible.
 
-</details>
+---
 
 ## Formula Reference
 
 <details>
 <summary><strong>Grouped by worksheet and analytical function</strong></summary>
 
-The workbook is intentionally designed around dynamic array formulas available in modern Microsoft Excel. Every analytical worksheet references the SKU spill range from the master configuration sheet, allowing the model to expand automatically as products are added.
+The workbook is intentionally designed around dynamic array formulas available in modern Microsoft Excel. Every analytical worksheet references the SKU spill range from the master configuration sheet, enabling automatic expansion when new products are added.
 
 ---
 
@@ -1258,7 +1260,10 @@ without manual filtering.
 
 ---
 
-# Validation Rules
+## Validation Rules
+
+<details>
+<summary><strong>Input validation and error handling</strong></summary>
 
 | Field | Validation Rule | Error Behavior |
 |------|-----------------|----------------|
@@ -1277,6 +1282,10 @@ without manual filtering.
 | Safety Stock | Automatically floored at zero | Negative values prevented |
 | Reorder Point | Always recalculated | Manual editing discouraged |
 | Suggested Purchase Quantity | Cannot be below MOQ when purchasing is required | Automatically rounded upward |
+
+</details>
+
+</details>
 
 ---
 
@@ -1303,7 +1312,7 @@ All tools follow the same principles:
 GitHub Repository
 
 ```
-https://github.com/your-repository
+https://github.com/HyVoid/DTC-Inventory-Planning-Control-Tower
 ```
 
 Browser Edition
@@ -1339,7 +1348,7 @@ See the LICENSE file for the complete license text.
 
 ## Acknowledgements
 
-This project was built from recurring inventory planning challenges observed across direct-to-consumer brands, ecommerce businesses, and supply chain teams that required better purchasing decisions without investing in large-scale planning systems.
+This project was built from recurring inventory planning challenges observed across direct-to-consumer brands, ecommerce businesses, and supply chain teams that required better purchasing decisions without implementing enterprise resource planning systems.
 
 The objective is not to replace ERP or MRP platforms.
 
