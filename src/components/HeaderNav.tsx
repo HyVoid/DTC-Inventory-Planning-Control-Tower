@@ -41,13 +41,18 @@ export default function HeaderNav({
       className="sticky top-0 z-50 h-[56px] w-full bg-white border-b border-[color:var(--nav-border)] shadow-[color:var(--shadow-nav)] flex items-center justify-between px-10"
     >
       {/* Brand Identity */}
-      <div className="flex items-center space-x-2 select-none">
-        <div className="w-8 h-8 rounded-lg bg-[color:var(--color-primary)] flex items-center justify-center text-white font-sans font-bold text-sm shadow-sm">
-          IV
+      <div className="flex items-center space-x-2 select-none shrink-0">
+        <div className="w-8 h-8 rounded-lg bg-[color:var(--color-primary)] flex items-center justify-center text-white font-sans font-bold text-xs shrink-0 shadow-sm">
+          DA
         </div>
-        <span className="text-lg font-bold tracking-tight serif-heading" style={{ letterSpacing: '-0.01em' }}>
-          InventoPlanner <span className="text-[10px] font-sans font-normal opacity-50 uppercase tracking-widest">SaaS</span>
-        </span>
+        <div className="flex flex-col">
+          <span className="text-sm font-bold tracking-tight text-[color:var(--color-primary)] serif-heading leading-tight" style={{ letterSpacing: '-0.01em' }}>
+            Demand-Adaptive Inventory Planning &amp; Purchasing Decision
+          </span>
+          <span className="text-[9px] font-mono font-bold text-[color:var(--color-accent)] uppercase tracking-wider leading-none">
+            Excel Toolkit Console
+          </span>
+        </div>
       </div>
 
       {/* Sheet Sheet Tab Selector */}

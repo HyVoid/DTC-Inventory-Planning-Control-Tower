@@ -42,6 +42,27 @@ export default function Dashboard({ skus, metrics, setActiveTab }: DashboardProp
 
   const totalVal = Object.values(categoryValues).reduce((sum, v) => sum + v, 0) || 1;
 
+  // 1. Calculate OUI (Operational Urgency Index) and order SKUs by OUI (ascending order)
+  const sortedByOUI = [...metrics].map(m => {
+    const skuObj = skus.find(s => s.id === m.skuId);
+    const totalAvailable = skuObj ? (skuObj.onHand + skuObj.inboundQty) : 0;
+    const oui = m.reorderPoint > 0 ? (totalAvailable / m.reorderPoint) : 2.0;
+    
+    const depletionDays = m.coverageDays;
+    const estDepletionDate = new Date();
+    estDepletionDate.setDate(estDepletionDate.getDate() + Math.ceil(depletionDays));
+    const estDepletionDateStr = depletionDays < 999 
+      ? estDepletionDate.toISOString().split('T')[0] 
+      : 'Infinite';
+
+    return {
+      ...m,
+      oui,
+      totalAvailable,
+      estDepletionDateStr
+    };
+  }).sort((a, b) => a.oui - b.oui);
+
   return (
     <div className="space-y-8 animate-[fadeUp_300ms_var(--ease-decel)_both]">
       
@@ -140,6 +161,240 @@ export default function Dashboard({ skus, metrics, setActiveTab }: DashboardProp
           <p className="text-[13px] text-gray-600 leading-relaxed max-w-5xl">
             Currently, <strong className="text-[color:var(--color-primary)]">{orderNowSKUs.length} items</strong> have breached their critical Reorder Points (ROP) and require immediate placement of new purchase orders to avoid DTC stockouts. Additionally, the China supply chain (70-day lead time) pillows represent <strong className="text-[color:var(--color-primary)]">{(totalOnHandValue > 0 ? ((metrics.find(m => m.skuId === 'SKU-001')?.onHandValue || 0) + (metrics.find(m => m.skuId === 'SKU-002')?.onHandValue || 0)) / totalOnHandValue * 100 : 0).toFixed(0)}%</strong> of total capital allocation. It is highly recommended to prioritize placement of suggested POs to minimize long-lead-time risk.
           </p>
+        </div>
+      </div>
+
+      {/* ── NEW: Control Tower Operational Traceability Center ── */}
+      <div className="space-y-4 border border-gray-200 bg-white p-6 rounded-[var(--radius-lg)] shadow-[var(--shadow-md)]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between pb-3 border-b border-gray-100 gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center space-x-2">
+              <span className="badge bg-[color:var(--color-primary)] text-white">Diagnostics Mode</span>
+              <h3 className="serif-heading text-[18px] font-bold text-[color:var(--color-primary)]">
+                Operational Traceability &amp; Decision Desk
+              </h3>
+            </div>
+            <p className="text-xs text-gray-500 font-light">
+              Multi-dimensional trace metrics tracking stock depletions, procurement ranking, lead time consumption, and future cash flow commitments.
+            </p>
+          </div>
+          <div className="text-right text-[11px] text-gray-400 font-mono">
+            UPDATED: <span className="font-semibold text-gray-600">REAL-TIME FORMULA SYNC</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          {/* Column 1: Urgency-Ranked Procurement & Depletion Queue */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-1.5 pb-1 border-b border-gray-100">
+              <span className="text-xs font-bold uppercase tracking-wider text-[color:var(--color-primary)] font-mono">
+                1. Urgency &amp; Depletion Tracker
+              </span>
+            </div>
+            <p className="text-[11px] text-gray-500 leading-normal">
+              SKUs ranked dynamically by <strong className="text-gray-700">Operational Urgency Index (OUI)</strong>. Ratio &le; 1.0 has breached ROP and requires order. &gt; 1.0 can safely wait.
+            </p>
+
+            <div className="space-y-2 max-h-[280px] overflow-y-auto pr-1">
+              {sortedByOUI.map(m => {
+                const isBreach = m.oui <= 1.0;
+                const isSoon = m.oui > 1.0 && m.oui <= 1.25;
+
+                return (
+                  <div key={m.skuId} className={`p-2.5 rounded-lg border text-xs transition-colors ${
+                    isBreach 
+                      ? 'bg-[color:var(--anomaly-bg)] border-red-200' 
+                      : isSoon 
+                      ? 'bg-amber-50/50 border-amber-200' 
+                      : 'bg-emerald-50/20 border-emerald-100'
+                  }`}>
+                    <div className="flex justify-between items-start">
+                      <div className="font-semibold text-[color:var(--color-primary)] truncate max-w-[160px]">
+                        {m.skuName}
+                      </div>
+                      <span className={`px-2 py-0.5 rounded text-[9px] font-mono font-bold tracking-wider ${
+                        isBreach 
+                          ? 'bg-red-100 text-[color:var(--color-negative)]' 
+                          : isSoon 
+                          ? 'bg-amber-100 text-amber-700' 
+                          : 'bg-emerald-100 text-emerald-700'
+                      }`}>
+                        {isBreach ? 'ORDER NOW' : isSoon ? 'ORDER SOON' : 'SAFELY WAIT'}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-gray-100/50 text-[10px] font-mono text-gray-500">
+                      <div>
+                        OUI Index: <span className={`font-bold ${isBreach ? 'text-[color:var(--color-negative)]' : 'text-gray-700'}`}>{m.oui.toFixed(2)}x</span>
+                      </div>
+                      <div className="text-right">
+                        Depletion: <span className={`font-semibold ${isBreach ? 'text-red-700' : 'text-emerald-700'}`}>{m.coverageDays.toFixed(0)} days</span>
+                      </div>
+                    </div>
+                    <div className="mt-1 text-[10px] text-gray-400 font-mono flex justify-between items-center">
+                      <span>Est. Depletion:</span>
+                      <span className="font-medium text-gray-600">{m.estDepletionDateStr}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Column 2: Lead Time Consumption & Demand Drivers */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-1.5 pb-1 border-b border-gray-100">
+              <span className="text-xs font-bold uppercase tracking-wider text-[color:var(--color-primary)] font-mono">
+                2. Lead Time Consumption (LTD)
+              </span>
+            </div>
+            <p className="text-[11px] text-gray-500 leading-normal">
+              Expected consumption during delivery lead days (<strong className="text-gray-700">LTD</strong>). Factored from historical trend and ad campaign multipliers.
+            </p>
+
+            <div className="space-y-2.5 max-h-[280px] overflow-y-auto pr-1">
+              {metrics.map(m => {
+                const skuObj = skus.find(s => s.id === m.skuId);
+                const hasActiveCampaign = skuObj && skuObj.campaigns && skuObj.campaigns.length > 0;
+                
+                return (
+                  <div key={m.skuId} className="p-2.5 rounded-lg border border-gray-100 bg-gray-50/50 text-xs">
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-[color:var(--color-primary)] truncate max-w-[170px]">
+                        {m.skuName}
+                      </span>
+                      <span className="text-[10px] text-gray-400 font-mono">{m.leadTime}d LT</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 mt-2 text-[10px] font-mono">
+                      <div className="space-y-0.5">
+                        <div className="text-gray-400 uppercase">LTD Consumption</div>
+                        <div className="font-bold text-[color:var(--color-primary)]">
+                          {m.leadTimeDemand.toLocaleString('en-US', { maximumFractionDigits: 0 })} <span className="font-normal text-gray-400">units</span>
+                        </div>
+                      </div>
+                      <div className="space-y-0.5 text-right">
+                        <div className="text-gray-400 uppercase">Safety Buffer</div>
+                        <div className="font-semibold text-emerald-700">
+                          +{m.safetyStock.toLocaleString('en-US', { maximumFractionDigits: 0 })} <span className="font-normal text-gray-400">units</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-1.5 pt-1 border-t border-gray-100 flex justify-between items-center text-[9px] font-mono">
+                      <div className="text-gray-400">
+                        Trend: <span className="font-bold text-indigo-700">{m.trendFactor.toFixed(2)}x</span>
+                      </div>
+                      {hasActiveCampaign ? (
+                        <span className="text-red-600 font-bold bg-red-50 px-1.5 py-0.2 rounded">
+                          Ad Campaigns Active
+                        </span>
+                      ) : (
+                        <span className="text-gray-400">Stable Organic</span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Column 3: Capital Ledger & Future Commitments Balance */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-1.5 pb-1 border-b border-gray-100">
+              <span className="text-xs font-bold uppercase tracking-wider text-[color:var(--color-primary)] font-mono">
+                3. Capital Balance &amp; Commitments
+              </span>
+            </div>
+            <p className="text-[11px] text-gray-500 leading-normal">
+              Compare capital currently locked in warehouse (<strong className="text-gray-700">Tied-Up</strong>) against upcoming procurement liability and suggested commitments.
+            </p>
+
+            <div className="space-y-5 bg-gray-50/30 p-4 rounded-xl border border-gray-100">
+              {/* Capital Balance Visual Bar */}
+              <div className="space-y-2">
+                <div className="text-[10px] uppercase tracking-wider font-mono font-bold text-gray-400">
+                  Dynamic Capital Balance Allocation
+                </div>
+                {(() => {
+                  const totalExposure = totalOnHandValue + totalInboundValue + totalSuggestedPOValue;
+                  const handPct = totalExposure > 0 ? (totalOnHandValue / totalExposure) * 100 : 0;
+                  const inboundPct = totalExposure > 0 ? (totalInboundValue / totalExposure) * 100 : 0;
+                  const suggestedPct = totalExposure > 0 ? (totalSuggestedPOValue / totalExposure) * 100 : 0;
+
+                  return (
+                    <div className="space-y-3">
+                      {/* Multi-segmented balance bar */}
+                      <div className="w-full h-4 bg-gray-100 rounded-full flex overflow-hidden shadow-inner">
+                        <div 
+                          className="h-full bg-[color:var(--color-primary)] transition-all duration-500"
+                          style={{ width: `${handPct}%` }}
+                          title={`Tied-Up: ${handPct.toFixed(1)}%`}
+                        />
+                        <div 
+                          className="h-full bg-blue-400 transition-all duration-500"
+                          style={{ width: `${inboundPct}%` }}
+                          title={`In-Transit: ${inboundPct.toFixed(1)}%`}
+                        />
+                        <div 
+                          className="h-full bg-[color:var(--color-accent)] transition-all duration-500"
+                          style={{ width: `${suggestedPct}%` }}
+                          title={`Proposed: ${suggestedPct.toFixed(1)}%`}
+                        />
+                      </div>
+
+                      {/* Legend with exact metrics */}
+                      <div className="space-y-2 text-[11px] font-mono">
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center space-x-1.5">
+                            <span className="w-2.5 h-2.5 rounded-sm bg-[color:var(--color-primary)]" />
+                            <span className="text-gray-500">Tied-Up (OnHand):</span>
+                          </div>
+                          <span className="font-bold text-gray-700">
+                            ${totalOnHandValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                          </span>
+                        </div>
+
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center space-x-1.5">
+                            <span className="w-2.5 h-2.5 rounded-sm bg-blue-400" />
+                            <span className="text-gray-500">In-Transit Commit:</span>
+                          </div>
+                          <span className="font-semibold text-blue-600">
+                            ${totalInboundValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                          </span>
+                        </div>
+
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center space-x-1.5">
+                            <span className="w-2.5 h-2.5 rounded-sm bg-[color:var(--color-accent)]" />
+                            <span className="text-gray-500">Proposed PO Commitment:</span>
+                          </div>
+                          <span className="font-bold text-[color:var(--color-accent)]">
+                            ${totalSuggestedPOValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                          </span>
+                        </div>
+
+                        <div className="pt-2 border-t border-gray-200 flex justify-between items-center text-xs font-serif font-bold text-[color:var(--color-primary)]">
+                          <span>Total Capital Exposure:</span>
+                          <span>
+                            ${totalExposure.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+
+              {/* Methodology Explanation */}
+              <div className="p-3 bg-white rounded-lg border border-gray-100 text-[10px] text-gray-400 leading-normal font-mono">
+                <strong className="text-gray-600">Decision Tip:</strong> Committing capital to proposed POs now maintains healthy service levels, mitigating stockout threats representing substantial retail sales potential.
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
