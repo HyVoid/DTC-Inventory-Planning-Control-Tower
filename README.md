@@ -1,10 +1,3 @@
-# 🌍 Language
-
-- 🇺🇸 English (Current)
-- [🇨🇳 简体中文](README.zh-CN.md)
-
----
-
 # Inventory Planning Control Tower
 
 ### Lightweight Inventory Planning & Purchasing Decision Support for DTC Brands — Available Free in Browser or Excel
@@ -12,7 +5,6 @@
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-Browser%20%2B%20Excel-success)
 ![Tool](https://img.shields.io/badge/Tool-Inventory%20Planning%20%26%20Decision%20Support-orange)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
 
 ---
 
@@ -45,10 +37,20 @@
 *The Excel workbook containing data import sheets, forecasting engine, purchasing planner, and executive dashboard for recurring inventory planning.*
 
 ---
-
 # What It Helps You Track
 
 Instead of manually comparing inventory reports, supplier lead times, and historical sales across multiple spreadsheets, the workbook keeps the operational picture together.
+
+Unlike traditional inventory trackers that assume demand is relatively stable, this workbook is designed for modern Direct-to-Consumer (DTC) businesses where demand can change rapidly.
+
+Paid advertising on platforms such as Meta and TikTok, successful product launches, seasonal campaigns, and viral products can all cause sales to accelerate within days rather than months. Under these conditions, static inventory planning often creates two costly outcomes:
+
+- **Demand is underestimated**, resulting in stockouts that waste previously acquired customers and advertising investment because products are no longer available for purchase.
+- **Demand is overestimated**, leading to excess inventory, slower inventory turnover, and unnecessary working capital tied up in stock.
+
+The planning challenge becomes even more complex when different products operate under different replenishment models. Some products rely on **long lead-time supply chains**, where manufacturing and transportation require several months and purchasing decisions must be made far in advance. Others use **short lead-time supply chains**, allowing faster replenishment but requiring tighter inventory and cash-flow management.
+
+Instead of applying one purchasing rule to every product, the workbook evaluates each SKU using its own demand pattern, lead time, inventory position, and replenishment constraints.
 
 It helps reveal:
 
@@ -56,12 +58,13 @@ It helps reveal:
 - Which SKUs require purchasing now versus those that can safely wait.
 - Expected inventory consumption during supplier lead times.
 - Capital currently tied up in inventory together with future purchasing commitments.
-- Demand changes caused by recent sales trends or planned marketing campaigns.
+- Demand changes caused by recent sales trends, paid advertising, or planned marketing campaigns.
 - Purchasing priorities ranked by operational urgency instead of intuition.
+- Inventory strategies tailored to both long lead-time and short lead-time supply chains within the same business.
 
 The objective is not to replace ERP systems.
 
-The objective is to provide a repeatable analytical framework for making purchasing decisions with the information already available.
+The objective is to provide a repeatable analytical framework that combines rolling demand forecasting, safety stock modelling, reorder point planning, and cash-aware purchasing recommendations using the operational data businesses already have.
 
 ---
 
