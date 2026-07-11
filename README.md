@@ -1,4 +1,4 @@
-# Inventory Planning Control Tower
+# Demand-Adaptive Inventory Planning & Purchasing Decision Excel Toolkit
 
 ### Lightweight Inventory Planning & Purchasing Decision Support for DTC Brands — Available Free in Browser or Excel
 
