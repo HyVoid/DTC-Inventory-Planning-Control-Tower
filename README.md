@@ -13,26 +13,16 @@
 > ## **No signup. No installation. Free.**
 >
 > 🌐 **Open in Browser**  
-> *(HTML Live Demo — Coming Soon)*
+> [*HTML Live Demo*](https://hyvoid.github.io/Demand-Adaptive-Inventory-Planning-Purchasing-Decision-Excel-Toolkit/)
 >
 > 📥 **Download Excel Version**  
-> *(GitHub Release / Gumroad — Coming Soon)*
+> [*Download Link*](https://alexhasgreatestuff.gumroad.com/l/rklhag)
 
 ---
 
 # Screenshots
 
-### Browser Version
-
-<!-- screenshot: browser version -->
-
-*A browser-based operational dashboard showing inventory health, purchasing priorities, cash exposure, and reorder alerts without requiring Excel.*
-
----
-
-### Excel Version
-
-<!-- screenshot: excel version -->
+<img width="1536" height="1024" alt="ChatGPT Image Jul 12, 2026, 08_02_21 PM" src="https://github.com/user-attachments/assets/602541c2-4073-4753-87db-05905e98cc7f" />
 
 *The Excel workbook containing data import sheets, forecasting engine, purchasing planner, and executive dashboard for recurring inventory planning.*
 
